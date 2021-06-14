@@ -30,7 +30,7 @@ class NewsRepository extends ServiceEntityRepository
         foreach ($data['channel']['item'] as $news) {
             $clone = $this->findBy(['url' => $news['link']]);
             if($clone) {
-                return $clone;
+                continue;
             }
             $newNews = new News();
             $newNews
@@ -40,7 +40,6 @@ class NewsRepository extends ServiceEntityRepository
                 ->setAuthor($news['author'] ?? null)
                 ->setCreateAt(new DateTime($news['pubDate']));
             $this->em->persist($newNews);
-
             if(isset($news['enclosure'])) {
                 foreach ($news['enclosure'] as $key => $enclosure) {
                     $image = new Image();
